@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-hero="chain">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -453,11 +453,76 @@
       @keyframes barGrow{ to{ transform:scaleX(1); } }
     }
   }
+
+  /* ============================================================
+     HERO MOTIF: CHAIN OF CUSTODY  (MOCKUP, dark only)
+     Self-drawing CRF -> CEC -> Database line. Toggle vs the ECG.
+     Review aid; remove the toggle + one motif once decided.
+     ============================================================ */
+  [data-hero="chain"] .hero-ecg { display: none; }
+  [data-hero="ecg"] .hero-chain { display: none; }
+
+  .hero-chain { position: absolute; left: 0; right: 0; bottom: 14%; height: 120px; opacity: .62; pointer-events: none; z-index: 0; }
+  .hero-chain .hc-track { position: absolute; left: 9%; right: 9%; top: 50%; height: 2px; transform: translateY(-50%); }
+  .hero-chain .hc-line {
+    position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--navy-mid), var(--red));
+    box-shadow: 0 0 8px rgba(230,57,70,.35);
+    animation: hcDraw 2.4s cubic-bezier(.4,0,.2,1) .2s forwards;
+  }
+  @keyframes hcDraw { to { transform: scaleX(1); } }
+  .hero-chain .hc-node {
+    position: absolute; top: 50%; transform: translate(-50%,-50%) scale(.5); opacity: 0;
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .12em;
+    white-space: nowrap; color: #cdddf5; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.18); padding: 7px 12px; border-radius: 8px;
+    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .hero-chain .hc-node.hc-db { background: var(--navy); border-color: var(--navy-mid); color: #fff; }
+  @keyframes hcPop { to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+  .hero-chain .hc-packet {
+    position: absolute; top: 50%; left: 9%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%; background: var(--red); box-shadow: 0 0 10px 2px rgba(230,57,70,.55);
+    animation: hcTravel 4.6s cubic-bezier(.45,0,.55,1) 2.4s infinite;
+  }
+  @keyframes hcTravel {
+    0% { left: 9%; opacity: 0; } 6% { opacity: 1; }
+    44% { left: 91%; opacity: 1; } 52% { left: 91%; opacity: 0; }
+    100% { left: 91%; opacity: 0; }
+  }
+
+  .hero-motif {
+    position: fixed; top: 78px; right: 18px; z-index: 58;
+    display: flex; align-items: center; gap: 4px; padding: 5px 7px; border-radius: 999px;
+    background: var(--nav-bg); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--border); box-shadow: 0 10px 28px rgba(0,0,0,.25);
+    font-family: "JetBrains Mono", monospace; font-size: 10px;
+  }
+  .hero-motif .hm-label { color: var(--text-dim); letter-spacing: .16em; text-transform: uppercase; font-size: 8px; padding: 0 4px; }
+  .hero-motif button {
+    font: inherit; cursor: pointer; border: none; background: transparent; color: var(--text);
+    padding: 5px 11px; border-radius: 999px; font-weight: 600; letter-spacing: .06em; transition: .2s;
+  }
+  .hero-motif button:hover { color: var(--heading); background: var(--surface-2); }
+  .hero-motif button.active { background: var(--accent); color: #fff; }
+  @media (max-width: 600px) { .hero-motif { top: auto; bottom: 70px; right: 10px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-chain .hc-line { animation: none; transform: scaleX(1); }
+    .hero-chain .hc-node { animation: none; opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    .hero-chain .hc-packet { display: none; }
+  }
 </style>
 </head>
 <body>
 <div id="progress"></div>
 <div id="cursor-glow" aria-hidden="true"></div>
+<!-- hero motif toggle (MOCKUP review aid; remove with the chain experiment) -->
+<div class="hero-motif" aria-label="Hero motif preview">
+  <span class="hm-label">Hero</span>
+  <button type="button" data-motif="chain" class="active">Chain</button>
+  <button type="button" data-motif="ecg">ECG</button>
+</div>
 
 <!-- ===================== NAV ===================== -->
 <header class="nav">
@@ -495,6 +560,13 @@
   <svg class="hero-ecg" id="ecg" viewBox="0 0 1200 180" preserveAspectRatio="none" aria-hidden="true">
     <path id="ecgPath" d="M0,90 L260,90 L285,90 L300,55 L315,125 L330,30 L348,90 L520,90 L545,90 L560,72 L575,108 L592,90 L760,90 L785,90 L800,55 L815,125 L830,30 L848,90 L1020,90 L1045,90 L1060,72 L1075,108 L1092,90 L1200,90" />
   </svg>
+  <div class="hero-chain" aria-hidden="true">
+    <div class="hc-track"><div class="hc-line"></div></div>
+    <div class="hc-packet"></div>
+    <div class="hc-node" style="left:9%; animation-delay:.25s;">CRF</div>
+    <div class="hc-node" style="left:50%; animation-delay:1.05s;">CEC REVIEW</div>
+    <div class="hc-node hc-db" style="left:91%; animation-delay:1.85s;">DATABASE</div>
+  </div>
   <div class="wrap" style="position:relative; z-index:2;">
     <div style="max-width:880px;">
       <div class="eyebrow reveal" style="margin-bottom:24px;">Cardiovascular Clinical Research</div>
@@ -1011,6 +1083,15 @@ form.addEventListener('submit', (e) => {
     if (!g.classList.contains('on')) g.classList.add('on');
   });
   document.addEventListener('mouseleave', () => g.classList.remove('on'));
+})();
+
+/* ---------- hero motif toggle (mockup review aid) ---------- */
+(function () {
+  const btns = document.querySelectorAll('.hero-motif button');
+  btns.forEach((b) => b.addEventListener('click', () => {
+    document.documentElement.dataset.hero = b.dataset.motif;
+    btns.forEach((x) => x.classList.toggle('active', x === b));
+  }));
 })();
 </script>
 <div class="design-switcher" aria-label="Design preview switcher">
