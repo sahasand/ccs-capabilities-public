@@ -468,34 +468,35 @@
   /* give the chain its own band, clear of the hero content */
   [data-hero="chain"] .hero { padding-bottom: 150px; }
 
-  .hero-chain { position: absolute; left: 0; right: 0; bottom: 44px; height: 52px; opacity: .72; pointer-events: none; z-index: 0; }
-  .hero-chain .hc-track { position: absolute; left: 9%; right: 9%; top: 50%; height: 1.5px; transform: translateY(-50%); }
+  .hero-chain { position: absolute; left: 0; right: 0; bottom: 38px; height: 66px; opacity: .74; pointer-events: none; z-index: 0; }
+  .hero-chain .hc-track { position: absolute; left: 8%; right: 8%; top: 24px; height: 1.5px; }
   .hero-chain .hc-line {
     position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0);
     background: rgba(138,160,196,.30);
     animation: hcDraw 2.4s cubic-bezier(.4,0,.2,1) .2s forwards;
   }
   @keyframes hcDraw { to { transform: scaleX(1); } }
-  /* verification sweep: red trace fills behind the packet, then fades and repeats */
+  /* verification sweep: grinds the 30-day haul (10->58%), then sprints the last 5 days (70->78%) */
   .hero-chain .hc-trace {
     position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0); opacity: 0;
     background: linear-gradient(90deg, rgba(230,57,70,.55), var(--red));
     box-shadow: 0 0 10px rgba(230,57,70,.5);
-    animation: hcTrace 5.5s cubic-bezier(.45,0,.55,1) 2.4s infinite;
+    animation: hcTrace 7s cubic-bezier(.4,0,.2,1) 2.4s infinite;
   }
   @keyframes hcTrace {
     0%  { transform: scaleX(0); opacity: 1; }
     4%  { transform: scaleX(0); }
-    30% { transform: scaleX(.5); }
-    40% { transform: scaleX(.5); }
-    58% { transform: scaleX(1); }
-    70% { transform: scaleX(1); opacity: 1; }
-    85% { opacity: 0; }
+    10% { transform: scaleX(0); }
+    58% { transform: scaleX(.786); }
+    70% { transform: scaleX(.786); }
+    78% { transform: scaleX(1); }
+    88% { transform: scaleX(1); opacity: 1; }
+    94% { opacity: 0; }
     100%{ transform: scaleX(1); opacity: 0; }
   }
   /* frosted chips sit ON the line (opaque enough to hide it edge-to-edge) */
   .hero-chain .hc-node {
-    position: absolute; top: 50%; transform: translate(-50%,-50%) scale(.6); opacity: 0;
+    position: absolute; top: 24px; transform: translate(-50%,-50%) scale(.6); opacity: 0;
     font-family: "JetBrains Mono", monospace; font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
     white-space: nowrap; color: #cdddf5;
     background: rgba(7,34,74,.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -505,46 +506,71 @@
   .hero-chain .hc-node.hc-start { animation-delay: .35s; }
   .hero-chain .hc-node.hc-db {
     background: var(--navy); border-color: var(--navy-mid); color: #fff;
-    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) 1.4s forwards, dbLock 5.5s ease 2.4s infinite;
+    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) 1.8s forwards, dbLock 7s ease 2.4s infinite;
   }
   .hero-chain .hc-node.hc-result {
     background: rgba(230,57,70,.14); border-color: rgba(230,57,70,.55); color: #fff;
-    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) 2.4s forwards, hcResult 5.5s ease 2.4s infinite;
+    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) 2.2s forwards, hcResult 7s ease 2.4s infinite;
   }
   @keyframes hcPop { to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
-  /* database locks as the sweep reaches the mid node */
+  /* database locks as the sweep reaches it (end of the 30-day haul) */
   @keyframes dbLock {
-    0%, 26% { box-shadow: none; }
-    34% { box-shadow: 0 0 0 4px rgba(230,57,70,.16), 0 0 16px rgba(230,57,70,.4); }
-    46%, 100% { box-shadow: none; }
-  }
-  /* topline result flares as the sweep completes */
-  @keyframes hcResult {
     0%, 54% { box-shadow: none; }
-    62% { box-shadow: 0 0 0 5px rgba(230,57,70,.18), 0 0 22px rgba(230,57,70,.5); }
-    78%, 100% { box-shadow: none; }
+    63% { box-shadow: 0 0 0 4px rgba(230,57,70,.16), 0 0 16px rgba(230,57,70,.4); }
+    72%, 100% { box-shadow: none; }
   }
-  /* packet hops node to node with a short pause at each (custody logged) */
+  /* topline result flares as the 5-day sprint completes */
+  @keyframes hcResult {
+    0%, 76% { box-shadow: none; }
+    84% { box-shadow: 0 0 0 5px rgba(230,57,70,.18), 0 0 22px rgba(230,57,70,.5); }
+    92%, 100% { box-shadow: none; }
+  }
+  /* packet: long grind to lock (10->58%), pause, then a fast sprint (70->78%) */
   .hero-chain .hc-packet {
-    position: absolute; top: 50%; left: 9%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
+    position: absolute; top: 24px; left: 8%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
     border-radius: 50%; background: var(--red);
     box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 0 11px 2px rgba(230,57,70,.65);
-    animation: hcTravel 5.5s cubic-bezier(.45,0,.55,1) 2.4s infinite;
+    animation: hcTravel 7s cubic-bezier(.45,0,.55,1) 2.4s infinite;
   }
   @keyframes hcTravel {
-    0%  { left: 9%;  opacity: 0; }
-    4%  { left: 9%;  opacity: 1; }
-    12% { left: 9%;  opacity: 1; }
-    30% { left: 50%; opacity: 1; }
-    40% { left: 50%; opacity: 1; }
-    58% { left: 91%; opacity: 1; }
-    70% { left: 91%; opacity: 1; }
-    78% { left: 91%; opacity: 0; }
-    100%{ left: 91%; opacity: 0; }
+    0%  { left: 8%;  opacity: 0; }
+    4%  { left: 8%;  opacity: 1; }
+    10% { left: 8%;  opacity: 1; }
+    58% { left: 74%; opacity: 1; }
+    70% { left: 74%; opacity: 1; }
+    78% { left: 92%; opacity: 1; }
+    88% { left: 92%; opacity: 1; }
+    94% { left: 92%; opacity: 0; }
+    100%{ left: 92%; opacity: 0; }
   }
+  /* speed-streak: only trails the packet during the 5-day sprint */
+  .hero-chain .hc-packet::after {
+    content: ""; position: absolute; right: 4px; top: 50%; width: 0; height: 2px;
+    transform: translateY(-50%); border-radius: 2px;
+    background: linear-gradient(90deg, transparent, rgba(230,57,70,.7));
+    animation: hcStreak 7s ease 2.4s infinite;
+  }
+  @keyframes hcStreak {
+    0%, 69% { width: 0; opacity: 0; }
+    73% { width: 36px; opacity: .9; }
+    78% { width: 12px; opacity: .5; }
+    80%, 100% { width: 0; opacity: 0; }
+  }
+  /* segment duration labels (below the rail); brighten as the sweep traverses each */
+  .hero-chain .hc-seg {
+    position: absolute; top: 46px; transform: translateX(-50%); white-space: nowrap;
+    font-family: "JetBrains Mono", monospace; font-size: 9px; font-weight: 600; letter-spacing: .18em;
+    color: var(--text-dim); opacity: 0;
+  }
+  .hero-chain .hc-seg.s1 { animation: segFade .8s ease 1.6s both, seg1Pulse 7s ease 2.4s infinite; }
+  .hero-chain .hc-seg.s2 { animation: segFade .8s ease 2.2s both, seg2Pulse 7s ease 2.4s infinite; }
+  @keyframes segFade { to { opacity: .8; } }
+  @keyframes seg1Pulse { 0%, 8% { color: var(--text-dim); } 32% { color: #fff; } 58% { color: #cdddf5; } 66%, 100% { color: var(--text-dim); } }
+  @keyframes seg2Pulse { 0%, 70% { color: #8a6066; } 76% { color: var(--red); } 86% { color: #f6b9bf; } 94%, 100% { color: #8a6066; } }
   @media (max-width: 600px) {
-    [data-hero="chain"] .hero { padding-bottom: 118px; }
+    [data-hero="chain"] .hero { padding-bottom: 132px; }
     .hero-chain .hc-node { font-size: 9px; padding: 5px 9px; }
+    .hero-chain .hc-seg { font-size: 8px; letter-spacing: .12em; }
   }
 
   .hero-motif {
@@ -566,8 +592,9 @@
   @media (prefers-reduced-motion: reduce) {
     .hero-chain .hc-line { animation: none; transform: scaleX(1); }
     .hero-chain .hc-trace { display: none; }
-    .hero-chain .hc-node, .hero-chain .hc-node.hc-db { animation: none; opacity: 1; transform: translate(-50%,-50%) scale(1); box-shadow: none; }
+    .hero-chain .hc-node, .hero-chain .hc-node.hc-db, .hero-chain .hc-node.hc-result { animation: none; opacity: 1; transform: translate(-50%,-50%) scale(1); box-shadow: none; }
     .hero-chain .hc-packet { display: none; }
+    .hero-chain .hc-seg { animation: none; opacity: .8; }
   }
 </style>
 </head>
@@ -620,9 +647,11 @@
   <div class="hero-chain" aria-hidden="true">
     <div class="hc-track"><div class="hc-line"></div><div class="hc-trace"></div></div>
     <div class="hc-packet"></div>
-    <div class="hc-node hc-start" style="left:9%;">LAST PATIENT</div>
-    <div class="hc-node hc-db" style="left:50%;">DATABASE LOCK</div>
-    <div class="hc-node hc-result" style="left:91%;">TOPLINE</div>
+    <div class="hc-node hc-start" style="left:8%;">LAST PATIENT</div>
+    <div class="hc-node hc-db" style="left:74%;">DATABASE LOCK</div>
+    <div class="hc-node hc-result" style="left:92%;">TOPLINE</div>
+    <div class="hc-seg s1" style="left:41%;">30 DAYS</div>
+    <div class="hc-seg s2" style="left:83%;">5 DAYS</div>
   </div>
   <div class="wrap" style="position:relative; z-index:2;">
     <div style="max-width:880px;">
