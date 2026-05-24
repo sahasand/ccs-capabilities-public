@@ -567,10 +567,12 @@
   @keyframes segFade { to { opacity: .8; } }
   @keyframes seg1Pulse { 0%, 8% { color: var(--text-dim); } 32% { color: #fff; } 58% { color: #cdddf5; } 66%, 100% { color: var(--text-dim); } }
   @keyframes seg2Pulse { 0%, 70% { color: #8a6066; } 76% { color: var(--red); } 86% { color: #f6b9bf; } 94%, 100% { color: #8a6066; } }
-  /* the proportional rail needs room; on phones/small tablets drop it and close the hero up */
+  /* on phones/small tablets, drop the proportional rail and show the ECG instead */
   @media (max-width: 760px) {
     .hero-chain { display: none; }
-    [data-hero="chain"] .hero { padding-bottom: 72px; }
+    [data-hero="chain"] .hero-ecg { display: block; }
+    [data-hero="chain"] .hero { padding-bottom: 110px; }
+    .hero-motif { display: none; }
   }
 
   .hero-motif {
