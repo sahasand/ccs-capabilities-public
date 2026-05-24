@@ -462,33 +462,49 @@
   [data-hero="chain"] .hero-ecg { display: none; }
   [data-hero="ecg"] .hero-chain { display: none; }
 
-  .hero-chain { position: absolute; left: 0; right: 0; bottom: 14%; height: 120px; opacity: .62; pointer-events: none; z-index: 0; }
-  .hero-chain .hc-track { position: absolute; left: 9%; right: 9%; top: 50%; height: 2px; transform: translateY(-50%); }
+  /* give the chain its own band, clear of the hero content */
+  [data-hero="chain"] .hero { padding-bottom: 150px; }
+
+  .hero-chain { position: absolute; left: 0; right: 0; bottom: 44px; height: 52px; opacity: .72; pointer-events: none; z-index: 0; }
+  .hero-chain .hc-track { position: absolute; left: 9%; right: 9%; top: 50%; height: 1.5px; transform: translateY(-50%); }
   .hero-chain .hc-line {
     position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0);
-    background: linear-gradient(90deg, var(--navy-mid), var(--red));
-    box-shadow: 0 0 8px rgba(230,57,70,.35);
+    background: linear-gradient(90deg, rgba(30,65,128,.7), var(--red));
+    box-shadow: 0 0 8px rgba(230,57,70,.3);
     animation: hcDraw 2.4s cubic-bezier(.4,0,.2,1) .2s forwards;
   }
   @keyframes hcDraw { to { transform: scaleX(1); } }
+  /* frosted chips sit ON the line (opaque enough to hide it edge-to-edge) */
   .hero-chain .hc-node {
-    position: absolute; top: 50%; transform: translate(-50%,-50%) scale(.5); opacity: 0;
-    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .12em;
-    white-space: nowrap; color: #cdddf5; background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.18); padding: 7px 12px; border-radius: 8px;
+    position: absolute; top: 50%; transform: translate(-50%,-50%) scale(.6); opacity: 0;
+    font-family: "JetBrains Mono", monospace; font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+    white-space: nowrap; color: #cdddf5;
+    background: rgba(7,34,74,.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.16); padding: 6px 12px; border-radius: 8px;
     animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) forwards;
   }
   .hero-chain .hc-node.hc-db { background: var(--navy); border-color: var(--navy-mid); color: #fff; }
   @keyframes hcPop { to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+  /* packet hops node to node with a short pause at each (custody logged) */
   .hero-chain .hc-packet {
-    position: absolute; top: 50%; left: 9%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
-    border-radius: 50%; background: var(--red); box-shadow: 0 0 10px 2px rgba(230,57,70,.55);
-    animation: hcTravel 4.6s cubic-bezier(.45,0,.55,1) 2.4s infinite;
+    position: absolute; top: 50%; left: 9%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
+    border-radius: 50%; background: var(--red); box-shadow: 0 0 9px 2px rgba(230,57,70,.55);
+    animation: hcTravel 5.5s cubic-bezier(.45,0,.55,1) 2.4s infinite;
   }
   @keyframes hcTravel {
-    0% { left: 9%; opacity: 0; } 6% { opacity: 1; }
-    44% { left: 91%; opacity: 1; } 52% { left: 91%; opacity: 0; }
-    100% { left: 91%; opacity: 0; }
+    0%  { left: 9%;  opacity: 0; }
+    4%  { left: 9%;  opacity: 1; }
+    12% { left: 9%;  opacity: 1; }
+    30% { left: 50%; opacity: 1; }
+    40% { left: 50%; opacity: 1; }
+    58% { left: 91%; opacity: 1; }
+    70% { left: 91%; opacity: 1; }
+    78% { left: 91%; opacity: 0; }
+    100%{ left: 91%; opacity: 0; }
+  }
+  @media (max-width: 600px) {
+    [data-hero="chain"] .hero { padding-bottom: 118px; }
+    .hero-chain .hc-node { font-size: 9px; padding: 5px 9px; }
   }
 
   .hero-motif {
