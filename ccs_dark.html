@@ -572,7 +572,6 @@
     .hero-chain { display: none; }
     [data-hero="chain"] .hero-ecg { display: block; }
     [data-hero="chain"] .hero { padding-bottom: 110px; }
-    .hero-motif { display: none; }
   }
 
   .hero-motif {
@@ -589,7 +588,7 @@
   }
   .hero-motif button:hover { color: var(--heading); background: var(--surface-2); }
   .hero-motif button.active { background: var(--accent); color: #fff; }
-  @media (max-width: 600px) { .hero-motif { top: auto; bottom: 70px; right: 10px; } }
+  @media (max-width: 760px) { .hero-motif { display: none; } }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-chain .hc-line { animation: none; transform: scaleX(1); }
