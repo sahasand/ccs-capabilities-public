@@ -469,11 +469,27 @@
   .hero-chain .hc-track { position: absolute; left: 9%; right: 9%; top: 50%; height: 1.5px; transform: translateY(-50%); }
   .hero-chain .hc-line {
     position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0);
-    background: linear-gradient(90deg, rgba(30,65,128,.7), var(--red));
-    box-shadow: 0 0 8px rgba(230,57,70,.3);
+    background: rgba(138,160,196,.30);
     animation: hcDraw 2.4s cubic-bezier(.4,0,.2,1) .2s forwards;
   }
   @keyframes hcDraw { to { transform: scaleX(1); } }
+  /* verification sweep: red trace fills behind the packet, then fades and repeats */
+  .hero-chain .hc-trace {
+    position: absolute; inset: 0; transform-origin: left center; transform: scaleX(0); opacity: 0;
+    background: linear-gradient(90deg, rgba(230,57,70,.55), var(--red));
+    box-shadow: 0 0 10px rgba(230,57,70,.5);
+    animation: hcTrace 5.5s cubic-bezier(.45,0,.55,1) 2.4s infinite;
+  }
+  @keyframes hcTrace {
+    0%  { transform: scaleX(0); opacity: 1; }
+    4%  { transform: scaleX(0); }
+    30% { transform: scaleX(.5); }
+    40% { transform: scaleX(.5); }
+    58% { transform: scaleX(1); }
+    70% { transform: scaleX(1); opacity: 1; }
+    85% { opacity: 0; }
+    100%{ transform: scaleX(1); opacity: 0; }
+  }
   /* frosted chips sit ON the line (opaque enough to hide it edge-to-edge) */
   .hero-chain .hc-node {
     position: absolute; top: 50%; transform: translate(-50%,-50%) scale(.6); opacity: 0;
@@ -483,12 +499,21 @@
     border: 1px solid rgba(255,255,255,.16); padding: 6px 12px; border-radius: 8px;
     animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) forwards;
   }
-  .hero-chain .hc-node.hc-db { background: var(--navy); border-color: var(--navy-mid); color: #fff; }
+  .hero-chain .hc-node.hc-db {
+    background: var(--navy); border-color: var(--navy-mid); color: #fff;
+    animation: hcPop .6s cubic-bezier(.34,1.56,.64,1) forwards, dbLock 5.5s ease 2.4s infinite;
+  }
   @keyframes hcPop { to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+  @keyframes dbLock {
+    0%, 52% { box-shadow: none; }
+    62% { box-shadow: 0 0 0 4px rgba(230,57,70,.16), 0 0 18px rgba(230,57,70,.45); }
+    80%, 100% { box-shadow: none; }
+  }
   /* packet hops node to node with a short pause at each (custody logged) */
   .hero-chain .hc-packet {
     position: absolute; top: 50%; left: 9%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
-    border-radius: 50%; background: var(--red); box-shadow: 0 0 9px 2px rgba(230,57,70,.55);
+    border-radius: 50%; background: var(--red);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 0 11px 2px rgba(230,57,70,.65);
     animation: hcTravel 5.5s cubic-bezier(.45,0,.55,1) 2.4s infinite;
   }
   @keyframes hcTravel {
@@ -525,7 +550,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .hero-chain .hc-line { animation: none; transform: scaleX(1); }
-    .hero-chain .hc-node { animation: none; opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    .hero-chain .hc-trace { display: none; }
+    .hero-chain .hc-node, .hero-chain .hc-node.hc-db { animation: none; opacity: 1; transform: translate(-50%,-50%) scale(1); box-shadow: none; }
     .hero-chain .hc-packet { display: none; }
   }
 </style>
@@ -577,11 +603,11 @@
     <path id="ecgPath" d="M0,90 L260,90 L285,90 L300,55 L315,125 L330,30 L348,90 L520,90 L545,90 L560,72 L575,108 L592,90 L760,90 L785,90 L800,55 L815,125 L830,30 L848,90 L1020,90 L1045,90 L1060,72 L1075,108 L1092,90 L1200,90" />
   </svg>
   <div class="hero-chain" aria-hidden="true">
-    <div class="hc-track"><div class="hc-line"></div></div>
+    <div class="hc-track"><div class="hc-line"></div><div class="hc-trace"></div></div>
     <div class="hc-packet"></div>
-    <div class="hc-node" style="left:9%; animation-delay:.25s;">CRF</div>
-    <div class="hc-node" style="left:50%; animation-delay:1.05s;">CEC REVIEW</div>
-    <div class="hc-node hc-db" style="left:91%; animation-delay:1.85s;">DATABASE</div>
+    <div class="hc-node" style="left:9%; animation-delay:.35s;">CRF</div>
+    <div class="hc-node" style="left:50%; animation-delay:1.4s;">CEC REVIEW</div>
+    <div class="hc-node hc-db" style="left:91%; animation-delay:2.4s;">DATABASE</div>
   </div>
   <div class="wrap" style="position:relative; z-index:2;">
     <div style="max-width:880px;">
