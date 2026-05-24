@@ -267,6 +267,8 @@
   .tl-cap { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: "JetBrains Mono", monospace; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
   .tl-cap.top { bottom: 22px; color: var(--heading); font-weight: 700; }
   .tl-cap.bot { top: 22px; color: var(--text-dim); }
+  /* keep the final caption (Topline · Day 35) from overflowing the viewport */
+  .tl-node.end .tl-cap { left: auto; right: 0; transform: none; text-align: right; }
 
   /* ---------- tables ---------- */
   .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
