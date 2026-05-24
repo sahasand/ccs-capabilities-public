@@ -395,6 +395,60 @@
     .hero-blob { animation: none; }
     #cursor-glow { display: none; }
   }
+
+  /* ============================================================
+     SCROLL-DRIVEN MOTION & POLISH  (shared across all themes)
+     Resting state IS the final state. Motion engages only where
+     animation-timeline is supported and motion is not reduced.
+     ============================================================ */
+  .quote-panel{ position:relative; padding:34px 38px 30px 42px; background:var(--surface-2);
+    border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:var(--radius); overflow:hidden; }
+  .quote-panel::before{ content:"\201C"; position:absolute; top:-22px; left:14px;
+    font-family:Georgia,"Times New Roman",serif; font-size:138px; line-height:1;
+    color:var(--accent); opacity:0.15; pointer-events:none; }
+  .quote-panel p{ position:relative; z-index:1; }
+
+  .card--num{ overflow:hidden; }
+  .card--num > *{ position:relative; z-index:1; }
+  .card--num .ghost{ position:absolute; right:6px; bottom:-26px; z-index:0;
+    font-family:"JetBrains Mono",monospace; font-weight:700; font-size:118px; line-height:1;
+    color:var(--num); opacity:0.05; pointer-events:none; user-select:none; }
+
+  .mbars{ margin-top:40px; display:flex; flex-direction:column; gap:14px; }
+  .mbar{ display:grid; grid-template-columns:138px 1fr 40px; align-items:center; gap:16px; }
+  .mbar .mlbl{ font-family:"JetBrains Mono",monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); }
+  .mbar .mtrack{ height:10px; border-radius:6px; background:var(--surface-2);
+    border:1px solid var(--border); overflow:hidden; }
+  .mbar .mfill{ height:100%; border-radius:6px; background:var(--num);
+    width:var(--w,0%); transform-origin:left; }
+  .mbar.is-accent .mfill{ background:var(--accent); }
+  .mbar .mval{ font-family:"JetBrains Mono",monospace; font-weight:700; font-size:15px;
+    color:var(--num); text-align:right; font-variant-numeric:tabular-nums; }
+  .mbar.is-accent .mval{ color:var(--accent); }
+  @media (max-width:520px){ .mbar{ grid-template-columns:96px 1fr 30px; gap:10px; } .card--num .ghost{ font-size:92px; } }
+
+  .reveal-scrub{ opacity:1; transform:none; }
+
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion: no-preference){
+      #progress{ width:100%; transform:scaleX(0); transform-origin:left;
+        animation:progressGrow linear both; animation-timeline:scroll(root); }
+      @keyframes progressGrow{ to{ transform:scaleX(1); } }
+
+      .hero .wrap{ animation:heroDrift linear both; animation-timeline:scroll(root); animation-range:0 90vh; }
+      @keyframes heroDrift{ to{ transform:translateY(-38px); opacity:0.6; } }
+
+      .tl-fill{ width:0; animation:tlGrow linear both; animation-timeline:view(); animation-range:cover 12% cover 68%; }
+      @keyframes tlGrow{ to{ width:100%; } }
+
+      .reveal-scrub{ animation:scrubIn linear both; animation-timeline:view(); animation-range:entry 0% entry 62%; }
+      @keyframes scrubIn{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } }
+
+      .mbar .mfill{ transform:scaleX(0); animation:barGrow linear both; animation-timeline:view(); animation-range:entry 10% cover 28%; }
+      @keyframes barGrow{ to{ transform:scaleX(1); } }
+    }
+  }
 </style>
 </head>
 <body>
@@ -475,7 +529,7 @@
 <section class="pad" id="thesis">
   <div class="wrap" style="max-width:920px;">
     <div class="eyebrow reveal">The Thesis · CCS Operating Philosophy</div>
-    <blockquote class="reveal d1" style="margin:26px 0 0; border:0; padding:0;">
+    <blockquote class="reveal d1 quote-panel" style="margin:30px 0 0;">
       <p style="font-size:clamp(1.4rem,3vw,2.05rem); line-height:1.3; font-weight:700; color:var(--heading); letter-spacing:-0.025em;">
         “Cardiovascular trials fail at <em>execution</em>, not science. The people who win your trial should be the ones who run it, all the way through database lock.”
       </p>
@@ -493,9 +547,9 @@
     <div class="rule reveal"><span class="mono">Why CCS Exists · The Execution Gap</span><span class="line"></span></div>
     <h2 class="h-section reveal d1" style="max-width:760px;">Every year, promising cardiac therapies fail. Not because the science was wrong, but because the <em>execution</em> was.</h2>
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin-top:50px;">
-      <div class="card card-hover reveal"><span class="idx">01 / Team Rotation</span><h3>The A-team vanishes.</h3><p>The scientists who win your business disappear after kickoff, replaced by junior associates learning your protocol on the fly.</p></div>
-      <div class="card card-hover reveal d1"><span class="idx">02 / Late Biostats</span><h3>Statistics arrive too late.</h3><p>Biostatisticians join at database lock rather than protocol concept, spending months untangling what should have been designed correctly from the start.</p></div>
-      <div class="card card-hover reveal d2"><span class="idx">03 / Scope Creep</span><h3>Budgets become change orders.</h3><p>Conservative budgets turn into change orders. Timelines slip. Your PDUFA date moves.</p></div>
+      <div class="card card-hover reveal card--num"><span class="ghost" aria-hidden="true">01</span><span class="idx">01 / Team Rotation</span><h3>The A-team vanishes.</h3><p>The scientists who win your business disappear after kickoff, replaced by junior associates learning your protocol on the fly.</p></div>
+      <div class="card card-hover reveal d1 card--num"><span class="ghost" aria-hidden="true">02</span><span class="idx">02 / Late Biostats</span><h3>Statistics arrive too late.</h3><p>Biostatisticians join at database lock rather than protocol concept, spending months untangling what should have been designed correctly from the start.</p></div>
+      <div class="card card-hover reveal d2 card--num"><span class="ghost" aria-hidden="true">03</span><span class="idx">03 / Scope Creep</span><h3>Budgets become change orders.</h3><p>Conservative budgets turn into change orders. Timelines slip. Your PDUFA date moves.</p></div>
     </div>
   </div>
 </section>
@@ -556,11 +610,11 @@
 
       <!-- 5-step pipeline + recent work -->
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-top:46px;">
-        <div class="card reveal" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">01</span><h3 style="font-size:0.98rem;">Event triggered</h3><p style="font-size:0.85rem;">Flagged case routed for adjudication.</p></div>
-        <div class="card reveal d1" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">02</span><h3 style="font-size:0.98rem;">Package built</h3><p style="font-size:0.85rem;">De-identified. Treatment blinded.</p></div>
-        <div class="card reveal d2" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">03</span><h3 style="font-size:0.98rem;">Blinded review</h3><p style="font-size:0.85rem;">Two-reviewer minimum, third for disagreement.</p></div>
-        <div class="card reveal d3" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">04</span><h3 style="font-size:0.98rem;">Classified</h3><p style="font-size:0.85rem;">Coded to endpoint definitions. Audit trail preserved.</p></div>
-        <div class="card reveal d4" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">05</span><h3 style="font-size:0.98rem;">Locked</h3><p style="font-size:0.85rem;">Transmitted to biostats. Reopened only by amendment.</p></div>
+        <div class="card reveal-scrub" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">01</span><h3 style="font-size:0.98rem;">Event triggered</h3><p style="font-size:0.85rem;">Flagged case routed for adjudication.</p></div>
+        <div class="card reveal-scrub" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">02</span><h3 style="font-size:0.98rem;">Package built</h3><p style="font-size:0.85rem;">De-identified. Treatment blinded.</p></div>
+        <div class="card reveal-scrub" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">03</span><h3 style="font-size:0.98rem;">Blinded review</h3><p style="font-size:0.85rem;">Two-reviewer minimum, third for disagreement.</p></div>
+        <div class="card reveal-scrub" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">04</span><h3 style="font-size:0.98rem;">Classified</h3><p style="font-size:0.85rem;">Coded to endpoint definitions. Audit trail preserved.</p></div>
+        <div class="card reveal-scrub" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">05</span><h3 style="font-size:0.98rem;">Locked</h3><p style="font-size:0.85rem;">Transmitted to biostats. Reopened only by amendment.</p></div>
       </div>
 
       <div class="reveal" style="margin-top:34px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
@@ -615,12 +669,12 @@
         <div class="stat reveal d3"><div class="num" data-target="10" data-suffix="y">0</div><div class="lbl">Continuous core-lab work</div></div>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin-top:40px;">
-        <div class="card reveal" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">10</div><div class="kicker" style="margin-top:8px;">Echo</div></div>
-        <div class="card reveal d1" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">4</div><div class="kicker" style="margin-top:8px;">Hemodynamic</div></div>
-        <div class="card reveal d2" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">4</div><div class="kicker" style="margin-top:8px;">MRI</div></div>
-        <div class="card reveal d3" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">3</div><div class="kicker" style="margin-top:8px;">SPECT</div></div>
-        <div class="card reveal d4" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--accent); font-weight:700;">1</div><div class="kicker" style="margin-top:8px;">PET · ¹⁵O-H₂O</div></div>
+      <div class="mbars reveal">
+        <div class="mbar" style="--w:100%;"><span class="mlbl">Echo</span><div class="mtrack"><div class="mfill"></div></div><span class="mval">10</span></div>
+        <div class="mbar" style="--w:40%;"><span class="mlbl">Hemodynamic</span><div class="mtrack"><div class="mfill"></div></div><span class="mval">4</span></div>
+        <div class="mbar" style="--w:40%;"><span class="mlbl">MRI</span><div class="mtrack"><div class="mfill"></div></div><span class="mval">4</span></div>
+        <div class="mbar" style="--w:30%;"><span class="mlbl">SPECT</span><div class="mtrack"><div class="mfill"></div></div><span class="mval">3</span></div>
+        <div class="mbar is-accent" style="--w:10%;"><span class="mlbl">PET · ¹⁵O-H₂O</span><div class="mtrack"><div class="mfill"></div></div><span class="mval">1</span></div>
       </div>
 
       <div class="card reveal" style="margin-top:30px; display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:center;">
@@ -830,12 +884,15 @@
 <script>
 /* ---------- scroll progress ---------- */
 const progress = document.getElementById('progress');
-function onScroll() {
-  const h = document.documentElement;
-  const max = h.scrollHeight - h.clientHeight;
-  progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+const cssScrollProgress = CSS.supports('animation-timeline', 'scroll()') && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!cssScrollProgress) {
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
-window.addEventListener('scroll', onScroll, { passive: true });
 
 /* ---------- reveal on scroll ---------- */
 const revealObs = new IntersectionObserver((entries) => {
@@ -871,7 +928,8 @@ document.querySelectorAll('.stat .num[data-target]').forEach((el) => countObs.ob
 
 /* ---------- timeline fill ---------- */
 const tlTrack = document.getElementById('tlTrack');
-if (tlTrack) {
+const cssViewFill = CSS.supports('animation-timeline', 'view()') && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (tlTrack && !cssViewFill) {
   const tlObs = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) { document.getElementById('tlFill').style.width = '100%'; tlObs.unobserve(e.target); }
