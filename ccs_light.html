@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cardiovascular Clinical Sciences — Capabilities Overview</title>
+<meta name="description" content="Cardiovascular Clinical Sciences (CCS): a cardiovascular clinical research organization. In-house adjudication, core lab imaging, biometrics, and senior cardiologists from protocol concept through database lock. Boston · Founded 1997." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  /* ============================================================
+     THEME TOKENS  —  the ONLY block that differs between the
+     light / dark / hybrid builds. Everything below is shared.
+     ============================================================ */
+  :root {
+    /* brand constants (shared across all themes) */
+    --navy: #0A2A5E;
+    --navy-deep: #051A3D;
+    --navy-mid: #1E4180;
+    --red: #E63946;
+    --red-dark: #C42A37;
+    --ink: #1A1A1A;
+    --slate: #6B7280;
+    --line: #D6DEE8;
+    --pale-blue: #E8F0FA;
+    --paper-soft: #F7F9FC;
+    --radius: 12px;
+
+    /* semantic tokens — LIGHT THEME */
+    --bg: #FFFFFF;
+    --bg-alt: #F7F9FC;
+    --surface: #FFFFFF;
+    --surface-2: #F7F9FC;
+    --heading: #0A2A5E;
+    --text: #3A3A3A;
+    --text-dim: #6B7280;
+    --accent: #E63946;
+    --border: #D6DEE8;
+    --border-strong: #C3CFDF;
+    --nav-bg: rgba(255, 255, 255, 0.82);
+    --nav-border: rgba(10, 42, 94, 0.10);
+    --num: #0A2A5E;
+    --grid-tint: rgba(10, 42, 94, 0.025);
+    --shadow-card: 0 1px 2px rgba(10, 42, 94, 0.04);
+    --shadow-hover: 0 18px 40px rgba(10, 42, 94, 0.12), 0 6px 14px rgba(10, 42, 94, 0.06);
+    --glow: transparent;
+  }
+
+  /* Dark band context — used as-is by hybrid build on feature sections,
+     and as the global surface by the dark build. Shared definition. */
+  .band-dark {
+    --bg: var(--navy-deep);
+    --bg-alt: #07224a;
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-2: rgba(255, 255, 255, 0.06);
+    --heading: #FFFFFF;
+    --text: #C6D4EA;
+    --text-dim: #8AA0C4;
+    --border: rgba(255, 255, 255, 0.12);
+    --border-strong: rgba(255, 255, 255, 0.20);
+    --num: #FFFFFF;
+    --grid-tint: rgba(255, 255, 255, 0.035);
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* ============================================================
+     BASE
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--red); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, h4 { color: var(--heading); font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+  section { position: relative; }
+  .pad { padding-top: 92px; padding-bottom: 92px; }
+  @media (max-width: 700px) { .pad { padding-top: 64px; padding-bottom: 64px; } }
+
+  /* faint engineering grid overlay */
+  .gridbg::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-tint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-tint) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+  }
+
+  /* ---------- typographic atoms ---------- */
+  .mono { font-family: "JetBrains Mono", monospace; }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .eyebrow::before {
+    content: ""; width: 26px; height: 2px; background: var(--accent); display: inline-block;
+  }
+  .eyebrow--center { justify-content: center; }
+  .kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+  .h-display { font-size: clamp(2.1rem, 5vw, 3.7rem); line-height: 1.04; font-weight: 800; letter-spacing: -0.035em; }
+  .h-section { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.02rem, 1.5vw, 1.22rem); line-height: 1.6; color: var(--text); font-weight: 400; }
+  em { color: var(--accent); font-style: normal; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em;
+    padding: 13px 22px; border-radius: 9px; cursor: pointer;
+    transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s, background .25s, border-color .25s;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--red); color: #fff; box-shadow: 0 8px 22px rgba(230,57,70,0.28); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(230,57,70,0.36); }
+  .btn-ghost { background: transparent; color: var(--heading); border-color: var(--border-strong); }
+  .band-dark .btn-ghost { color: #fff; }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- section rule ---------- */
+  .rule { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
+  .rule .mono { font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--heading); white-space: nowrap; }
+  .rule .line { height: 1px; background: var(--border); flex: 1; }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 26px;
+    box-shadow: var(--shadow-card);
+    transition: transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s;
+    position: relative; overflow: hidden;
+  }
+  .band-dark .card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .card-hover:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: var(--border-strong); }
+  .card .idx {
+    font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700;
+    color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; display: block;
+  }
+  .card h3 { font-size: 1.18rem; margin-bottom: 9px; letter-spacing: -0.02em; }
+  .card p { font-size: 0.93rem; line-height: 1.6; color: var(--text); margin: 0; }
+
+  /* ---------- stat blocks ---------- */
+  .stat .num {
+    font-family: "JetBrains Mono", monospace; font-weight: 700;
+    font-size: clamp(2.1rem, 4vw, 3rem); letter-spacing: -0.04em; color: var(--num);
+    line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .stat .num .u { color: var(--accent); }
+  .stat .lbl {
+    font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-dim);
+    margin-top: 11px; line-height: 1.45;
+  }
+
+  /* ---------- monogram avatar ---------- */
+  .mono-av {
+    width: 60px; height: 60px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 16px;
+    color: var(--heading); background: var(--pale-blue);
+    border: 1.5px solid var(--navy); position: relative;
+  }
+  .band-dark .mono-av { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.4); }
+  .mono-av::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--red); opacity: .55; }
+
+  /* ---------- pills / tags ---------- */
+  .pill {
+    font-family: "JetBrains Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 6px;
+    background: var(--pale-blue); color: var(--navy); display: inline-block;
+  }
+  .band-dark .pill { background: rgba(255,255,255,0.08); color: #cdddf5; }
+  .pill--red { background: var(--red); color: #fff; }
+
+  /* ---------- nav ---------- */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    background: var(--nav-bg); backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--nav-border);
+    transition: background .3s, border-color .3s;
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .mk { font-weight: 800; font-size: 17px; letter-spacing: -0.03em; color: var(--heading); }
+  .brand .sub { font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a.lnk { font-size: 13px; font-weight: 500; color: var(--text); position: relative; transition: color .2s; }
+  .nav-links a.lnk::after { content: ""; position: absolute; left: 0; bottom: -5px; height: 2px; width: 0; background: var(--red); transition: width .25s; }
+  .nav-links a.lnk:hover { color: var(--heading); }
+  .nav-links a.lnk:hover::after { width: 100%; }
+  .hamb { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+  .hamb span { width: 22px; height: 2px; background: var(--heading); transition: .3s; display: block; }
+  .mobile-menu { position: fixed; inset: 0; z-index: 55; background: var(--bg); transform: translateX(100%); transition: transform .4s cubic-bezier(.7,0,.3,1); display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 40px; }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a { font-size: 1.6rem; font-weight: 700; color: var(--heading); padding: 12px 0; border-bottom: 1px solid var(--border); }
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+    .hamb { display: flex; }
+  }
+
+  /* scroll progress */
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--navy), var(--red)); z-index: 70; transition: width .1s linear; }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: 150px; padding-bottom: 110px; overflow: hidden; }
+  .hero-ecg { position: absolute; left: 0; right: 0; bottom: 8%; width: 100%; height: 180px; pointer-events: none; opacity: .5; }
+  .hero-ecg path { fill: none; stroke: var(--red); stroke-width: 2; filter: drop-shadow(0 0 6px rgba(230,57,70,0.35)); }
+  .hero-glow { position: absolute; pointer-events: none; }
+
+  /* ---------- chain of custody ---------- */
+  .chain { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+  .chain .node {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    padding: 12px 16px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--heading); white-space: nowrap;
+  }
+  .chain.good .node { border-color: var(--navy-mid); }
+  .chain.bad .node { border-style: dashed; }
+  .chain .arr { color: var(--text-dim); padding: 0 12px; font-weight: 700; }
+  .chain.bad .arr { color: var(--red); }
+  .chain .node.db { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  /* ---------- timeline ---------- */
+  .tl-track { position: relative; height: 3px; background: var(--border); border-radius: 3px; margin: 60px 0 50px; }
+  .tl-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, var(--navy), var(--red)); border-radius: 3px; transition: width 1.4s cubic-bezier(.4,0,.2,1); }
+  .tl-node { position: absolute; top: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 3px solid var(--navy); margin: 0 auto; }
+  .tl-node.end .tl-dot { background: var(--red); border-color: var(--red); box-shadow: 0 0 0 5px rgba(230,57,70,0.18); }
+  .tl-cap { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: "JetBrains Mono", monospace; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .tl-cap.top { bottom: 22px; color: var(--heading); font-weight: 700; }
+  .tl-cap.bot { top: 22px; color: var(--text-dim); }
+
+  /* ---------- tables ---------- */
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+  table.data { width: 100%; border-collapse: collapse; min-width: 640px; }
+  table.data thead th {
+    background: var(--navy); color: #fff; font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-align: left; padding: 12px 16px;
+  }
+  table.data tbody td { padding: 12px 16px; font-size: 12.5px; border-top: 1px solid var(--border); color: var(--text); }
+  table.data tbody tr:hover { background: var(--surface-2); }
+  table.data .study { font-weight: 700; color: var(--heading); }
+  table.data .feat td { background: linear-gradient(90deg, rgba(230,57,70,0.07), transparent 75%); }
+  table.data .num { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .tab {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 10px 16px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-dim); transition: .2s;
+  }
+  .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn .4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* sponsors */
+  .sponsor {
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+    background: var(--surface); transition: .3s; min-height: 116px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .sponsor:hover { border-color: var(--navy-mid); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .sponsor .nm { font-weight: 800; font-size: 1.02rem; color: var(--heading); letter-spacing: -0.02em; }
+
+  /* form */
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .field input, .field textarea {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 9px;
+    padding: 12px 14px; font-family: inherit; font-size: 14px; color: var(--heading); transition: border-color .2s;
+  }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+  .reveal.vis { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; }
+  .reveal.d3 { transition-delay: .24s; } .reveal.d4 { transition-delay: .32s; }
+  .reveal.d5 { transition-delay: .40s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; }
+    html { scroll-behavior: auto; }
+    .hero-ecg, .tl-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Cardiovascular Clinical Sciences home">
+      <span class="mk">CCS</span>
+      <span class="sub">Cardiovascular Clinical Sciences</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="lnk" href="#glance">At a Glance</a>
+      <a class="lnk" href="#why">Why CCS</a>
+      <a class="lnk" href="#model">Operating Model</a>
+      <a class="lnk" href="#diff">Differentiators</a>
+      <a class="lnk" href="#experience">Experience</a>
+      <a class="lnk" href="#team">Team</a>
+      <a class="btn btn-primary" style="padding:9px 16px;" href="#contact">Get in touch</a>
+    </nav>
+    <button class="hamb" id="hamb" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#glance">At a Glance</a>
+  <a href="#why">Why CCS</a>
+  <a href="#model">Operating Model</a>
+  <a href="#diff">Differentiators</a>
+  <a href="#experience">Experience</a>
+  <a href="#team">Team</a>
+  <a href="#contact">Get in touch</a>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero gridbg" id="top">
+  <svg class="hero-ecg" id="ecg" viewBox="0 0 1200 180" preserveAspectRatio="none" aria-hidden="true">
+    <path id="ecgPath" d="M0,90 L260,90 L285,90 L300,55 L315,125 L330,30 L348,90 L520,90 L545,90 L560,72 L575,108 L592,90 L760,90 L785,90 L800,55 L815,125 L830,30 L848,90 L1020,90 L1045,90 L1060,72 L1075,108 L1092,90 L1200,90" />
+  </svg>
+  <div class="wrap" style="position:relative; z-index:2;">
+    <div style="max-width:880px;">
+      <div class="eyebrow reveal" style="margin-bottom:24px;">Cardiovascular Clinical Research</div>
+      <h1 class="h-display reveal d1">Capabilities <em>Overview</em>.<br />Cardiology that stays<br />through database lock.</h1>
+      <p class="lede reveal d2" style="margin-top:26px; max-width:620px;">
+        A cardiovascular clinical research organization built so the scientists who win your business are the ones who run your trial — from protocol concept to topline.
+      </p>
+      <div class="reveal d3" style="display:flex; gap:14px; flex-wrap:wrap; margin-top:34px;">
+        <a href="#diff" class="btn btn-primary">Explore capabilities</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+      <div class="reveal d4 mono" style="margin-top:46px; font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-dim);">
+        Boston, MA &nbsp;·&nbsp; Founded 1997 &nbsp;·&nbsp; Tufts Medical Center Partnership
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AT A GLANCE ===================== -->
+<section class="pad" id="glance" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">CCS at a Glance</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:860px;">Six decades of cardiovascular research. Forty-five trials. Nine thousand endpoints. <em>One focus.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:34px 28px; margin-top:54px;">
+      <div class="stat reveal"><div class="num" data-target="60" data-suffix="+">0</div><div class="lbl">Combined years<br />founder CV research</div></div>
+      <div class="stat reveal d1"><div class="num" data-target="45" data-suffix="+">0</div><div class="lbl">Heart failure trials<br />in the last 20 years</div></div>
+      <div class="stat reveal d2"><div class="num" data-target="9000" data-suffix="+">0</div><div class="lbl">Adjudicated endpoints<br />across named CV trials</div></div>
+      <div class="stat reveal d3"><div class="num" data-target="12" data-suffix="+">0</div><div class="lbl">Core-lab echo studies<br />read in-house</div></div>
+      <div class="stat reveal d4"><div class="num" data-target="13" data-suffix="">0</div><div class="lbl">DSMB engagements<br />CV trial oversight</div></div>
+      <div class="stat reveal d5"><div class="num" data-nocount="1">1997</div><div class="lbl">Founded · Boston<br />Tufts partnership</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE THESIS ===================== -->
+<section class="pad" id="thesis">
+  <div class="wrap" style="max-width:920px;">
+    <div class="eyebrow reveal">The Thesis · CCS Operating Philosophy</div>
+    <blockquote class="reveal d1" style="margin:26px 0 0; border:0; padding:0;">
+      <p style="font-size:clamp(1.4rem,3vw,2.05rem); line-height:1.3; font-weight:700; color:var(--heading); letter-spacing:-0.025em;">
+        “Cardiovascular trials fail at <em>execution</em>, not science. The cardiologist who wins the pitch needs to stay through database lock. The biostatistician needs to see the protocol concept, not just the analysis. The core lab needs to be reading images, not just storing them.”
+      </p>
+    </blockquote>
+    <p class="reveal d2" style="margin-top:22px; line-height:1.6; color:var(--text); max-width:680px;">
+      After thirty years in this field, we built CCS because no one else was doing it this way.
+    </p>
+    <div class="reveal d2 kicker" style="margin-top:26px;">Marvin Konstam, MD &nbsp;&amp;&nbsp; James Udelson, MD — Founders, Cardiovascular Clinical Sciences · Tufts Medical Center</div>
+  </div>
+</section>
+
+<!-- ===================== WHY CCS EXISTS ===================== -->
+<section class="pad" id="why" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">Why CCS Exists · The Execution Gap</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:760px;">Every year, promising cardiac therapies fail. Not because the science was wrong — because the <em>execution</em> was.</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin-top:50px;">
+      <div class="card card-hover reveal"><span class="idx">01 / Team Rotation</span><h3>The A-team vanishes.</h3><p>The scientists who win your business disappear after kickoff, replaced by junior associates learning your protocol on the fly.</p></div>
+      <div class="card card-hover reveal d1"><span class="idx">02 / Late Biostats</span><h3>Statistics arrive too late.</h3><p>Biostatisticians join at database lock rather than protocol concept, spending months untangling what should have been designed correctly from the start.</p></div>
+      <div class="card card-hover reveal d2"><span class="idx">03 / Scope Creep</span><h3>Budgets become change orders.</h3><p>Conservative budgets turn into change orders. Timelines slip. Your PDUFA date moves.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== OPERATING MODEL ===================== -->
+<section class="pad" id="model">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">The CCS Operating Model</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:760px;">What changes when cardiovascular work stays in-house. <em>Four principles. No exceptions.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:22px; margin-top:50px;">
+      <div class="card card-hover reveal"><span class="idx">01</span><h3>Cardiologists on Every Protocol</h3><p>Konstam, Udelson, and senior cardiology staff engage from protocol concept through database lock — not as advisors, as decision-makers.</p></div>
+      <div class="card card-hover reveal d1"><span class="idx">02</span><h3>Biometrics Built In</h3><p>Data management, medical coding, and SAP and mock-shell development in-house, with statistical programming delivered to support sponsor needs.</p></div>
+      <div class="card card-hover reveal d2"><span class="idx">03</span><h3>Adjudication In-House</h3><p>Blinded independent CEC adjudication performed by CCS cardiologists. Chain of custody from CRF to database stays inside CCS. No subcontractors.</p></div>
+      <div class="card card-hover reveal d3"><span class="idx">04</span><h3>Core Lab Reads Images</h3><p>Echo, hemodynamic, MRI, SPECT, and PET read in-house by CCS. Not stored. Not shipped to a vendor. Read by people CCS employs.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DIFFERENTIATORS ===================== -->
+<section id="diff">
+
+  <!-- 7a · Adjudication (dark band in hybrid) -->
+  <div class="pad gridbg" id="adjudication">
+    <div class="wrap">
+      <div class="eyebrow reveal">Differentiator · Adjudication</div>
+      <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:end; margin-top:18px;">
+        <h2 class="h-section reveal d1">Blinded. Adjudicated. <em>Defensible.</em></h2>
+        <p class="reveal d2" style="line-height:1.6; color:var(--text);">Most CROs subcontract cardiovascular endpoint adjudication to external CEC vendors. CCS does not. The firm sponsors trust to deliver the data also stands behind the adjudication of its events.</p>
+      </div>
+
+      <div class="stat reveal d2" style="margin-top:48px;">
+        <div class="num" data-target="9000" data-suffix="+">0</div>
+        <div class="lbl">CV endpoints adjudicated in-house · across named CV trials</div>
+      </div>
+
+      <!-- chain of custody comparison -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:26px; margin-top:50px;">
+        <div class="reveal">
+          <div class="kicker" style="color:var(--accent); margin-bottom:14px;">CCS · In-House</div>
+          <div class="chain good">
+            <span class="node">CRF</span><span class="arr">→</span>
+            <span class="node">CEC Review</span><span class="arr">→</span>
+            <span class="node db">Database</span>
+          </div>
+          <p style="margin-top:14px; font-size:0.88rem; color:var(--text-dim);">Single chain of custody. Same team. No handoffs.</p>
+        </div>
+        <div class="reveal d1">
+          <div class="kicker" style="margin-bottom:14px;">Typical CRO · Subcontracted</div>
+          <div class="chain bad">
+            <span class="node">CRF</span><span class="arr">→</span>
+            <span class="node">External CEC Vendor</span><span class="arr">→</span>
+            <span class="node">CRO</span><span class="arr">→</span>
+            <span class="node db" style="background:var(--slate); border-color:var(--slate);">Database</span>
+          </div>
+          <p style="margin-top:14px; font-size:0.88rem; color:var(--text-dim);">Handoffs. Vendor disputes. Chain of custody breaks.</p>
+        </div>
+      </div>
+
+      <!-- 5-step pipeline + recent work -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-top:46px;">
+        <div class="card reveal" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">01</span><h3 style="font-size:0.98rem;">Event triggered</h3><p style="font-size:0.85rem;">Flagged case routed for adjudication.</p></div>
+        <div class="card reveal d1" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">02</span><h3 style="font-size:0.98rem;">Package built</h3><p style="font-size:0.85rem;">De-identified. Treatment blinded.</p></div>
+        <div class="card reveal d2" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">03</span><h3 style="font-size:0.98rem;">Blinded review</h3><p style="font-size:0.85rem;">Two-reviewer minimum, third for disagreement.</p></div>
+        <div class="card reveal d3" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">04</span><h3 style="font-size:0.98rem;">Classified</h3><p style="font-size:0.85rem;">Coded to endpoint definitions. Audit trail preserved.</p></div>
+        <div class="card reveal d4" style="padding:18px;"><span class="idx" style="margin-bottom:8px;">05</span><h3 style="font-size:0.98rem;">Locked</h3><p style="font-size:0.85rem;">Transmitted to biostats. Reopened only by amendment.</p></div>
+      </div>
+
+      <div class="reveal" style="margin-top:34px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <span class="pill pill--red">Recent</span>
+        <span class="pill">Cardiac amyloidosis · CEC · 250+ events</span>
+        <span class="pill">Federally-funded program · CEC · ~2,300 patient pool</span>
+        <span class="pill">HFpEF · DSMB</span>
+        <span class="pill">Refractory angina · DSMB</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7b · Time to decision (dark band in hybrid) -->
+  <div class="pad" id="time" style="background:var(--bg-alt);">
+    <div class="wrap">
+      <div class="eyebrow reveal">Differentiator · Time-to-Decision</div>
+      <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:end; margin-top:18px;">
+        <h2 class="h-section reveal d1">From last patient to topline. <em>35 days.</em></h2>
+        <p class="reveal d2" style="line-height:1.6; color:var(--text);">Three workstreams. One coordinated team. CRA, data management, and biostatistics run concurrently from LPLV — programming coordination begins five days before lock.</p>
+      </div>
+
+      <div class="tl-track reveal d2" id="tlTrack">
+        <div class="tl-fill" id="tlFill"></div>
+        <div class="tl-node" style="left:0%;"><div class="tl-cap top">LPLV</div><div class="tl-dot"></div></div>
+        <div class="tl-node" style="left:28%;"><div class="tl-cap bot">Day 10</div><div class="tl-dot"></div></div>
+        <div class="tl-node" style="left:56%;"><div class="tl-cap bot">Day 20</div><div class="tl-dot"></div></div>
+        <div class="tl-node" style="left:85%;"><div class="tl-cap top">DBL · Day 30</div><div class="tl-dot"></div></div>
+        <div class="tl-node end" style="left:100%;"><div class="tl-cap bot">Topline · Day 35</div><div class="tl-dot"></div></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:22px; margin-top:18px;">
+        <div class="card reveal"><h3 style="font-size:1.05rem;">Parallel, not sequential</h3><p>CRA, DM, and biostats workstreams run concurrently from LPLV. Programming coordination begins five days before lock.</p></div>
+        <div class="card reveal d1"><h3 style="font-size:1.05rem;">Senior PM in the room</h3><p>Directors review every milestone. No junior project manager translating between sponsor, sites, and biostats.</p></div>
+        <div class="card reveal d2"><h3 style="font-size:1.05rem;">Vendor coordination owned by CCS</h3><p>Statistical programming vendor managed by CCS biometrics. Specs, QC, and timeline accountability stay inside CCS.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7c · Core lab -->
+  <div class="pad" id="corelab">
+    <div class="wrap">
+      <div class="eyebrow reveal">Differentiator · Core Laboratory</div>
+      <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:end; margin-top:18px;">
+        <h2 class="h-section reveal d1">Five modalities. <em>One core lab.</em></h2>
+        <p class="reveal d2" style="line-height:1.6; color:var(--text);">Echo, hemodynamic catheterization, MRI, SPECT, and PET — operated as a central core lab, in-house, for a decade. Not stored. Not subcontracted. Read by people CCS employs.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:28px; margin-top:48px;">
+        <div class="stat reveal"><div class="num" data-target="13" data-suffix="">0</div><div class="lbl">Imaging-led trials</div></div>
+        <div class="stat reveal d1"><div class="num" data-target="5" data-suffix="">0</div><div class="lbl">Modalities operated</div></div>
+        <div class="stat reveal d2"><div class="num" data-target="1750" data-prefix="~">0</div><div class="lbl">Patients imaged</div></div>
+        <div class="stat reveal d3"><div class="num" data-target="10" data-suffix="y">0</div><div class="lbl">Continuous core-lab work</div></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin-top:40px;">
+        <div class="card reveal" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">10</div><div class="kicker" style="margin-top:8px;">Echo</div></div>
+        <div class="card reveal d1" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">4</div><div class="kicker" style="margin-top:8px;">Hemodynamic</div></div>
+        <div class="card reveal d2" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">4</div><div class="kicker" style="margin-top:8px;">MRI</div></div>
+        <div class="card reveal d3" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--num); font-weight:700;">3</div><div class="kicker" style="margin-top:8px;">SPECT</div></div>
+        <div class="card reveal d4" style="padding:18px;"><div class="num mono" style="font-size:1.5rem; color:var(--accent); font-weight:700;">1</div><div class="kicker" style="margin-top:8px;">PET · ¹⁵O-H₂O</div></div>
+      </div>
+
+      <div class="card reveal" style="margin-top:30px; display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:center;">
+        <div class="mono-av" aria-hidden="true">JD</div>
+        <div>
+          <div class="kicker" style="margin-bottom:6px;">Marquee Engagement · Multi-Modality Core Lab</div>
+          <p style="margin:0; color:var(--text); font-size:0.95rem; line-height:1.6;">In a Phase 2 cell-therapy program, echo, MRI, and SPECT read the same patients in parallel — function, structure, and perfusion across <strong style="color:var(--heading);">20 sites and ~220 patients</strong>. Core Lab Operations led by <strong style="color:var(--heading);">Jing Dai, MD &amp; PhD</strong>. Cardiac PET reads on an active multi-region CAD program.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOUNDERS ===================== -->
+<section class="pad" id="founders" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">Founders · Founded 1997 · Tufts Medical Center</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:760px;">Two physicians. Six decades of cardiovascular research, academic medicine, and <em>FDA collaboration.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:22px; margin-top:50px;">
+      <div class="card reveal">
+        <div style="display:flex; gap:18px; align-items:center; margin-bottom:20px;">
+          <div class="mono-av" aria-hidden="true">MK</div>
+          <div><h3 style="font-size:1.2rem;">Marvin Konstam, MD</h3><div class="kicker" style="color:var(--accent); margin-top:4px;">Founder · Chief Scientific Officer</div></div>
+        </div>
+        <p style="margin:0 0 14px; color:var(--text-dim); font-size:0.85rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em;">30+ YEARS · HEART FAILURE &amp; CARDIORENAL</p>
+        <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px;">
+          <li><span class="pill">Leadership</span> &nbsp;Chief Physician Executive Emeritus, Tufts CV Center · Past President, HFSA</li>
+          <li><span class="pill">Academic</span> &nbsp;Professor of Medicine &amp; Radiology, Tufts University School of Medicine</li>
+          <li><span class="pill">Regulatory</span> &nbsp;Multiple FDA Advisory Panels · Close work with CDER &amp; CDRH</li>
+        </ul>
+      </div>
+      <div class="card reveal d1">
+        <div style="display:flex; gap:18px; align-items:center; margin-bottom:20px;">
+          <div class="mono-av" aria-hidden="true">JU</div>
+          <div><h3 style="font-size:1.2rem;">James Udelson, MD</h3><div class="kicker" style="color:var(--accent); margin-top:4px;">Founder · Chief Medical Officer</div></div>
+        </div>
+        <p style="margin:0 0 14px; color:var(--text-dim); font-size:0.85rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em;">30+ YEARS · NUCLEAR CARDIOLOGY &amp; IMAGING</p>
+        <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px;">
+          <li><span class="pill">Leadership</span> &nbsp;Chief of Cardiology &amp; Director of Nuclear Cardiology, Tufts · Past President, ASNC · ACC Board</li>
+          <li><span class="pill">Academic</span> &nbsp;Professor of Medicine &amp; Radiology · Associate Editor, JAMA Cardiology</li>
+          <li><span class="pill">Regulatory</span> &nbsp;Past member, FDA Medical Imaging Drugs AC · Ad-hoc Cardio-Renal panels</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CASE STUDY ===================== -->
+<section class="pad gridbg" id="case">
+  <div class="wrap">
+    <div class="eyebrow reveal">Case Study · Rare Cardiomyopathy · Phase 2</div>
+    <h2 class="h-section reveal d1" style="margin-top:18px; max-width:760px;">Phase 2 cardiology. <em>Delivered through COVID.</em></h2>
+    <p class="lede reveal d2" style="margin-top:18px; max-width:680px;">A first-in-population Phase 2 in a rare cardiomyopathy, run through the pandemic. A tightly defined population. Four external data streams. A protocol run like a pivotal.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:28px; margin-top:48px;">
+      <div class="stat reveal"><div class="num" data-target="90" data-suffix="%+">0</div><div class="lbl">Study completion</div></div>
+      <div class="stat reveal d1"><div class="num" data-target="30" data-suffix="d">0</div><div class="lbl">Database-lock target met</div></div>
+      <div class="stat reveal d2"><div class="num" data-target="4" data-suffix="">0</div><div class="lbl">External data streams</div></div>
+      <div class="stat reveal d3"><div class="num" data-target="100" data-suffix="%">0</div><div class="lbl">Source data verification</div></div>
+    </div>
+
+    <div class="reveal" style="margin-top:46px; display:flex; gap:10px; flex-wrap:wrap;">
+      <span class="pill">Protocol locked</span>
+      <span class="arr" style="color:var(--text-dim);">→</span>
+      <span class="pill">Enrolled through COVID</span>
+      <span class="arr" style="color:var(--text-dim);">→</span>
+      <span class="pill">Through Omicron</span>
+      <span class="arr" style="color:var(--text-dim);">→</span>
+      <span class="pill">Last subject in</span>
+      <span class="arr" style="color:var(--text-dim);">→</span>
+      <span class="pill pill--red">SAP lock → DBL</span>
+    </div>
+    <p class="reveal" style="margin-top:26px; color:var(--text-dim); font-size:0.9rem; max-width:680px;">Multiple blinded core labs plus central biomarker and PK — all in on time. 100% SDV. A Phase 2 run like a pivotal: dual-region regulatory engagement, 1:1 randomization, SAP locked before database lock.</p>
+  </div>
+</section>
+
+<!-- ===================== SPONSORS ===================== -->
+<section class="pad" id="sponsors" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">Selected Engagements · By Therapeutic Area</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:720px;">Trusted across the <em>cardiovascular landscape.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:48px;">
+      <div class="sponsor reveal"><div class="nm">Heart Failure · HFrEF</div><div><div class="kicker">Pivotal device program</div><span class="pill" style="margin-top:8px;">Full Service · Ph3</span></div></div>
+      <div class="sponsor reveal d1"><div class="nm">Cardiac Amyloidosis</div><div><div class="kicker">Endpoint adjudication</div><span class="pill pill--red" style="margin-top:8px;">CEC · 250+ events</span></div></div>
+      <div class="sponsor reveal d2"><div class="nm">Circulatory Support</div><div><div class="kicker">Post-approval</div><span class="pill" style="margin-top:8px;">Device · Registry</span></div></div>
+      <div class="sponsor reveal d3"><div class="nm">Heart Failure · HFpEF</div><div><div class="kicker">Trial design &amp; oversight</div><span class="pill" style="margin-top:8px;">DSMB</span></div></div>
+      <div class="sponsor reveal"><div class="nm">Hypertrophic Cardiomyopathy</div><div><div class="kicker">Phase 2</div><span class="pill" style="margin-top:8px;">Core Lab · Full Service</span></div></div>
+      <div class="sponsor reveal d1"><div class="nm">Structural Heart · Shunt</div><div><div class="kicker">Interatrial shunt</div><span class="pill" style="margin-top:8px;">Core Lab · Echo + MRI</span></div></div>
+      <div class="sponsor reveal d2"><div class="nm">Structural Heart · HFpEF</div><div><div class="kicker">Interatrial shunt</div><span class="pill" style="margin-top:8px;">Core Lab · Echo + Hemo</span></div></div>
+      <div class="sponsor reveal d3"><div class="nm">Heart Failure · Device</div><div><div class="kicker">Phase 3</div><span class="pill" style="margin-top:8px;">Device · Monitoring</span></div></div>
+      <div class="sponsor reveal"><div class="nm">Acute &amp; Chronic HF</div><div><div class="kicker">Multi-year, 8-study program</div><span class="pill pill--red" style="margin-top:8px;">Repeat Client · Full Service</span></div></div>
+    </div>
+    <p class="reveal kicker" style="margin-top:26px; color:var(--text-dim);">Drug, device, biologic, and diagnostic programs · Phase I through pivotal · Single engagements through multi-year partnerships.</p>
+  </div>
+</section>
+
+<!-- ===================== EXPERIENCE ===================== -->
+<section class="pad" id="experience">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">Experience · Cardiovascular Trial Portfolio</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:720px;">Heart failure is half of everything CCS has done. <em>Every subtype. Every phase.</em></h2>
+
+    <div class="tabs reveal d2" style="margin-top:40px;" role="tablist">
+      <button class="tab active" data-tab="drug">HF Drug</button>
+      <button class="tab" data-tab="device">HF Device</button>
+      <button class="tab" data-tab="cec">CEC &amp; DSMB</button>
+    </div>
+
+    <div class="tab-panel active reveal" data-panel="drug">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:24px;">
+        <div class="stat"><div class="num">9</div><div class="lbl">HF drug programs · Phase I–IV</div></div>
+        <div class="stat"><div class="num">6,200<span class="u">+</span></div><div class="lbl">Patients enrolled</div></div>
+        <div class="stat"><div class="num">250</div><div class="lbl">Sites · largest single trial</div></div>
+      </div>
+      <div style="margin-top:22px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="pill">Vasopressin antagonists</span><span class="pill">Beta-blockers</span><span class="pill">Aldosterone antagonists</span><span class="pill">SC diuretics</span><span class="pill">Interatrial shunt</span>
+      </div>
+      <p class="kicker" style="margin-top:18px; color:var(--text-dim);">Among them, one of the largest heart failure trials in CCS history — 4,000+ patients across 250 global sites.</p>
+    </div>
+
+    <div class="tab-panel reveal" data-panel="device">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:24px;">
+        <div class="stat"><div class="num">7</div><div class="lbl">HF device programs · pivotal–Ph IV</div></div>
+        <div class="stat"><div class="num">5<span class="u">yr</span></div><div class="lbl">Longest continuous conduct</div></div>
+        <div class="stat"><div class="num">NA + EU</div><div class="lbl">Multi-region implant trials</div></div>
+      </div>
+      <div style="margin-top:22px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="pill">Implantable neurostimulation</span><span class="pill">Interatrial shunt</span><span class="pill">Cardiac restraint</span><span class="pill">Fluid management</span><span class="pill">Implantable monitoring</span>
+      </div>
+      <p class="kicker" style="margin-top:18px; color:var(--text-dim);">Including a Phase 3 pivotal implant trial — adaptive Bayesian design, NA + EU, run for five years through COVID with no conduct issues.</p>
+    </div>
+
+    <div class="tab-panel reveal" data-panel="cec">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:24px;">
+        <div class="stat"><div class="num">11</div><div class="lbl">CEC trials adjudicated</div></div>
+        <div class="stat"><div class="num">9,000<span class="u">+</span></div><div class="lbl">Endpoints adjudicated in-house</div></div>
+        <div class="stat"><div class="num">13</div><div class="lbl">DSMB engagements</div></div>
+      </div>
+      <div style="margin-top:22px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="pill">Heart failure</span><span class="pill">Cardiac amyloidosis</span><span class="pill">Post-MI</span><span class="pill">Women's CV health</span><span class="pill">Cell therapy</span><span class="pill">Cardiorenal</span>
+      </div>
+      <p style="margin-top:18px; color:var(--text); font-size:0.95rem; line-height:1.6; max-width:680px;"><strong style="color:var(--heading);">9,000+ cardiovascular endpoints adjudicated in-house</strong> across legacy pivotal trials and current programs — single chain of custody, blinded, defensible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section class="pad" id="team" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="rule reveal"><span class="mono">How to Engage · The People in the Room</span><span class="line"></span></div>
+    <h2 class="h-section reveal d1" style="max-width:720px;">From first conversation through database lock — <em>the people in the room.</em></h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:50px;">
+      <div class="card card-hover reveal" style="text-align:center; padding:30px 22px;"><div class="mono-av" style="margin:0 auto 16px;">MK</div><h3 style="font-size:1.05rem;">Marvin Konstam, MD</h3><div class="kicker" style="margin-top:6px;">Founder &amp; Chief Scientific Officer</div></div>
+      <div class="card card-hover reveal d1" style="text-align:center; padding:30px 22px;"><div class="mono-av" style="margin:0 auto 16px;">JU</div><h3 style="font-size:1.05rem;">James Udelson, MD</h3><div class="kicker" style="margin-top:6px;">Founder &amp; Chief Medical Officer</div></div>
+      <div class="card card-hover reveal d2" style="text-align:center; padding:30px 22px;"><div class="mono-av" style="margin:0 auto 16px;">LR</div><h3 style="font-size:1.05rem;">Lorraine Rusch, PhD</h3><div class="kicker" style="margin-top:6px;">CEO &amp; President</div></div>
+      <div class="card card-hover reveal d3" style="text-align:center; padding:30px 22px;"><div class="mono-av" style="margin:0 auto 16px;">MD</div><h3 style="font-size:1.05rem;">Michael DiBattista</h3><div class="kicker" style="margin-top:6px;">Director, Project Delivery</div></div>
+      <div class="card card-hover reveal d4" style="text-align:center; padding:30px 22px;"><div class="mono-av" style="margin:0 auto 16px;">JD</div><h3 style="font-size:1.05rem;">Jing Dai, MD &amp; PhD</h3><div class="kicker" style="margin-top:6px;">Director, Core Lab Operations</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="pad band-dark gridbg" id="contact">
+  <div class="wrap" style="max-width:780px; text-align:center;">
+    <div class="eyebrow eyebrow--center reveal">How to Engage</div>
+    <h2 class="h-section reveal d1" style="margin-top:18px;">Let's talk about your <em>cardiovascular trial.</em></h2>
+    <p class="lede reveal d2" style="margin:18px auto 0; max-width:560px;">From first conversation through database lock. Tell us about your program and we'll get the right people in the room.</p>
+
+    <form id="contactForm" class="reveal d2" style="margin-top:42px; text-align:left;" novalidate>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" required /></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required /></div>
+      </div>
+      <div class="field" style="margin-top:18px;"><label for="f-org">Organization</label><input id="f-org" name="org" type="text" /></div>
+      <div class="field" style="margin-top:18px;"><label for="f-msg">About your program</label><textarea id="f-msg" name="message" rows="4" required></textarea></div>
+      <div style="display:flex; align-items:center; gap:18px; margin-top:24px; flex-wrap:wrap;">
+        <button type="submit" class="btn btn-primary">Send message</button>
+        <span id="formMsg" class="mono" style="font-size:12px; color:var(--accent); opacity:0; transition:opacity .3s;">Thank you — we'll be in touch shortly.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer style="background:var(--navy-deep); color:#cdddf5; padding:54px 0 30px;">
+  <div class="wrap">
+    <div style="display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; align-items:flex-start;">
+      <div>
+        <div style="font-weight:800; font-size:20px; color:#fff; letter-spacing:-0.03em;">Cardiovascular Clinical Sciences</div>
+        <div class="mono" style="font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#8AA0C4; margin-top:8px;">Boston, MA · Founded 1997 · Tufts Medical Center Partnership</div>
+      </div>
+      <nav style="display:flex; gap:26px; flex-wrap:wrap; font-size:13px;">
+        <a href="#glance" style="color:#cdddf5;">At a Glance</a>
+        <a href="#model" style="color:#cdddf5;">Operating Model</a>
+        <a href="#diff" style="color:#cdddf5;">Differentiators</a>
+        <a href="#experience" style="color:#cdddf5;">Experience</a>
+        <a href="#contact" style="color:#cdddf5;">Contact</a>
+      </nav>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:34px; padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+      <span class="mono" style="font-size:11px; color:#8AA0C4;">© 2026 Cardiovascular Clinical Sciences. All rights reserved.</span>
+      <a href="https://ccstrials.com" class="mono" style="font-size:11px; color:var(--red); letter-spacing:0.1em;">ccstrials.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- scroll progress ---------- */
+const progress = document.getElementById('progress');
+function onScroll() {
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* ---------- reveal on scroll ---------- */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
+
+/* ---------- counters ---------- */
+function animateCount(el) {
+  if (el.dataset.nocount) return;
+  const target = parseFloat(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const dur = 1800, start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 4);
+    let val = Math.floor(eased * target);
+    el.innerHTML = prefix + val.toLocaleString() + '<span class="u">' + suffix + '</span>';
+    if (p < 1) requestAnimationFrame(tick);
+    else el.innerHTML = prefix + target.toLocaleString() + '<span class="u">' + suffix + '</span>';
+  }
+  requestAnimationFrame(tick);
+}
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) { animateCount(e.target); countObs.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat .num[data-target]').forEach((el) => countObs.observe(el));
+
+/* ---------- timeline fill ---------- */
+const tlTrack = document.getElementById('tlTrack');
+if (tlTrack) {
+  const tlObs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { document.getElementById('tlFill').style.width = '100%'; tlObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.4 });
+  tlObs.observe(tlTrack);
+}
+
+/* ---------- hero ECG draw loop ---------- */
+const ecgPath = document.getElementById('ecgPath');
+if (ecgPath && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const len = ecgPath.getTotalLength();
+  ecgPath.style.strokeDasharray = len;
+  let t0 = null;
+  function drawECG(ts) {
+    if (!t0) t0 = ts;
+    const cycle = 4200;
+    const p = ((ts - t0) % cycle) / cycle;
+    ecgPath.style.strokeDashoffset = len * (1 - p);
+    requestAnimationFrame(drawECG);
+  }
+  requestAnimationFrame(drawECG);
+}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const key = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t === tab));
+    document.querySelectorAll('.tab-panel').forEach((p) => p.classList.toggle('active', p.dataset.panel === key));
+  });
+});
+
+/* ---------- mobile menu ---------- */
+const hamb = document.getElementById('hamb');
+const mobileMenu = document.getElementById('mobileMenu');
+hamb.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamb.setAttribute('aria-expanded', open);
+});
+mobileMenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+  mobileMenu.classList.remove('open');
+  hamb.setAttribute('aria-expanded', 'false');
+}));
+
+/* ---------- contact form ---------- */
+const form = document.getElementById('contactForm');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = form.name.value.trim(), email = form.email.value.trim(), msg = form.message.value.trim();
+  const ok = name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) && msg;
+  const fm = document.getElementById('formMsg');
+  if (ok) {
+    fm.textContent = "Thank you — we'll be in touch shortly.";
+    fm.style.color = 'var(--accent)';
+    fm.style.opacity = '1';
+    form.reset();
+    setTimeout(() => { fm.style.opacity = '0'; }, 5000);
+  } else {
+    fm.textContent = 'Please complete name, a valid email, and a message.';
+    fm.style.color = 'var(--accent)';
+    fm.style.opacity = '1';
+  }
+});
+</script>
+</body>
+</html>
