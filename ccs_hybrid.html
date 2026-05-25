@@ -7,7 +7,7 @@
 <meta name="description" content="Cardiovascular Clinical Sciences (CCS): a cardiovascular clinical research organization. In-house adjudication, core lab imaging, biometrics, and senior cardiologists from protocol concept through database lock. Boston · Founded 1997." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -58,6 +58,7 @@
     --shadow-card: 0 1px 2px rgba(10, 42, 94, 0.04);
     --shadow-hover: 0 18px 40px rgba(10, 42, 94, 0.12), 0 6px 14px rgba(10, 42, 94, 0.06);
     --glow: transparent;
+    --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   }
 
   /* Dark band context - used as-is by hybrid build on feature sections,
@@ -524,10 +525,67 @@
     .hero-chain .hc-packet { display: none; }
     .hero-chain .hc-seg { animation: none; opacity: .8; }
   }
+
+  /* ============================================================
+     PREMIUM SKIN  (ported from dark to hybrid)
+     Editorial serif headlines + ambient depth, on the light body
+     and the dark feature bands. Self-contained; safe to revert.
+     ============================================================ */
+  .h-display, .h-section {
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: -0.012em;
+  }
+  .h-display { font-size: clamp(2.4rem, 5.4vw, 4.1rem); line-height: 1.06; }
+  .h-section { line-height: 1.12; }
+  .h-display em, .h-section em { font-style: italic; font-weight: 600; }
+  .brand .mk { font-family: var(--serif); font-weight: 700; }
+
+  /* drifting ambient glow behind the hero (layered over the navy band) */
+  .hero { background: radial-gradient(ellipse 120% 80% at 50% -12%, rgba(36, 80, 150, 0.30), transparent 62%), var(--navy-deep); }
+  .hero-blob { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px); }
+  .hero-blob.b1 { width: 560px; height: 560px; top: -130px; right: -90px;
+    background: radial-gradient(circle, rgba(230, 57, 70, 0.20), transparent 70%);
+    animation: blobA 16s cubic-bezier(.45,0,.55,1) infinite alternate; }
+  .hero-blob.b2 { width: 640px; height: 640px; bottom: -220px; left: -130px;
+    background: radial-gradient(circle, rgba(30, 65, 128, 0.42), transparent 70%);
+    animation: blobB 19s cubic-bezier(.45,0,.55,1) infinite alternate; }
+  @keyframes blobA { to { transform: translate(-46px, 34px) scale(1.12); } }
+  @keyframes blobB { to { transform: translate(54px, -30px) scale(1.14); } }
+
+  /* cursor light (shows over the dark bands; invisible over the light body by design) */
+  #cursor-glow {
+    position: fixed; width: 520px; height: 520px; border-radius: 50%;
+    transform: translate(-50%, -50%); pointer-events: none; z-index: 56;
+    mix-blend-mode: screen; opacity: 0; transition: opacity .4s ease;
+    background: radial-gradient(circle, rgba(230,57,70,0.10) 0%, rgba(36,80,150,0.12) 38%, transparent 70%);
+  }
+  #cursor-glow.on { opacity: 1; }
+
+  /* film grain, on top of everything */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 200; pointer-events: none;
+    mix-blend-mode: overlay; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 168px 168px;
+  }
+
+  /* warmer card lift with a faint accent halo */
+  .card-hover:hover {
+    box-shadow: var(--shadow-hover), 0 0 0 1px rgba(230,57,70,0.18), 0 0 44px rgba(230,57,70,0.10);
+    border-color: rgba(230,57,70,0.32);
+  }
+
+  @media (max-width: 880px) { #cursor-glow { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-blob { animation: none; }
+    #cursor-glow { display: none; }
+  }
 </style>
 </head>
 <body>
 <div id="progress"></div>
+<div id="cursor-glow" aria-hidden="true"></div>
 
 <!-- ===================== NAV ===================== -->
 <header class="nav">
@@ -560,6 +618,8 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero gridbg band-dark" id="top">
+  <div class="hero-blob b1" aria-hidden="true"></div>
+  <div class="hero-blob b2" aria-hidden="true"></div>
   <svg class="hero-ecg" id="ecg" viewBox="0 0 1200 180" preserveAspectRatio="none" aria-hidden="true">
     <path id="ecgPath" d="M0,90 L260,90 L285,90 L300,55 L315,125 L330,30 L348,90 L520,90 L545,90 L560,72 L575,108 L592,90 L760,90 L785,90 L800,55 L815,125 L830,30 L848,90 L1020,90 L1045,90 L1060,72 L1075,108 L1092,90 L1200,90" />
   </svg>
@@ -1077,6 +1137,20 @@ form.addEventListener('submit', (e) => {
     fm.style.opacity = '1';
   }
 });
+
+/* ---------- cursor light (fine pointers, motion allowed) ---------- */
+(function () {
+  const g = document.getElementById('cursor-glow');
+  if (!g) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  window.addEventListener('mousemove', (e) => {
+    g.style.left = e.clientX + 'px';
+    g.style.top = e.clientY + 'px';
+    if (!g.classList.contains('on')) g.classList.add('on');
+  });
+  document.addEventListener('mouseleave', () => g.classList.remove('on'));
+})();
 </script>
 </body>
 </html>
